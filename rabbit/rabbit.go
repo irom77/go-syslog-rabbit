@@ -70,6 +70,6 @@ func Subscribe(ch *amqp.Channel, q *amqp.Queue ) {
 		d := gob.NewDecoder(r)
 		sd := new(Message)
 		d.Decode(sd)*/
-		log.Printf("Received message with message: %s", msg)
+		log.Printf("Received message with message: %s", msg.Body)
 	}
 }
