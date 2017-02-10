@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 	"github.com/IrekRomaniuk/go-syslog-rabbit/rabbit"
-	"bytes"
-	"encoding/gob"
+	//"bytes"
+	//"encoding/gob"
 )
 
 var (
@@ -23,15 +23,17 @@ func main() {
 	ln, _ := listenUDP("localhost", "6000" )
 	defer ln.Close()
 
-	buf := new(bytes.Buffer)
-	enc := gob.NewEncoder(buf)
-
+	//buf := new(bytes.Buffer)
+	//enc := gob.NewEncoder(buf)
 	for {
 	//go func() {
 		data := handleUDPConnection(ln)
-		buf.Reset()
-		enc.Encode(data)
-		rabbit.Publish(buf.Bytes(), ch, dataQueue)
+		/*message := rabbit.Message{
+			Value: data,
+		}*/
+		//buf.Reset()
+		//enc.Encode(message)
+		rabbit.Publish(data, ch, dataQueue)
 	//}()
 	}
 }
@@ -66,7 +68,7 @@ func handleUDPConnection(conn *net.UDPConn) string {
 	n, _, err := conn.ReadFromUDP(buffer)
 
 	//fmt.Println("UDP client : ", addr)
-	//fmt.Println("Received from UDP client :  ", string(buffer[:n]))
+	fmt.Println("Received from UDP client :  ", string(buffer[:n]))
 
 	if err != nil {
 		log.Fatal(err)

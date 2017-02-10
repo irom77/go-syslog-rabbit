@@ -4,12 +4,22 @@ import (
 	"fmt"
 	"log"
 	"github.com/streadway/amqp"
+	//"encoding/gob"
+	//"bytes"
 )
 
-func Publish(message []byte, ch *amqp.Channel,q *amqp.Queue) {
+/*func init() {
+	gob.Register(Message{})
+}
+
+type Message struct {
+	Value     []byte
+}*/
+
+func Publish(message string, ch *amqp.Channel,q *amqp.Queue) {
 	msg := amqp.Publishing{
 		//ContentType: "text/plain",
-		Body:        message,
+		Body:        []byte(message),
 	}
 	ch.Publish("", q.Name, false, false, msg)
 }
@@ -26,7 +36,7 @@ func GetChannel(url string) (*amqp.Connection, *amqp.Channel) {
 func GetQueue(qName string, ch *amqp.Channel) *amqp.Queue {
 
 	q, err := ch.QueueDeclare(qName,
-		true, //durable bool,
+		false, //durable bool,
 		false, //autoDelete bool,
 		false, //exclusivebool,
 		false, //noWait bool,
@@ -43,9 +53,7 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func Client(ch *amqp.Channel, q *amqp.Queue ) {
-
-
+func Subscribe(ch *amqp.Channel, q *amqp.Queue ) {
 	msgs, err := ch.Consume(
 		q.Name, //queue string,
 		"",     //consumer string,
@@ -58,6 +66,10 @@ func Client(ch *amqp.Channel, q *amqp.Queue ) {
 	failOnError(err, "Failed to register a consumer")
 
 	for msg := range msgs {
-		log.Printf("Received message with message: %s", msg.Body)
+		/*r := bytes.NewReader(msg.Body)
+		d := gob.NewDecoder(r)
+		sd := new(Message)
+		d.Decode(sd)*/
+		log.Printf("Received message with message: %s", msg)
 	}
 }
