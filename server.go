@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"github.com/irom77/go-syslog-rabbit/rabbit"
+	"bytes"
+	"encoding/gob"
 )
 
 var (
@@ -21,17 +23,17 @@ func main() {
 	ln, _ := listenUDP("localhost", "6000" )
 	defer ln.Close()
 
-	//buf := new(bytes.Buffer)
-	//enc := gob.NewEncoder(buf)
+	var buf bytes.Buffer
+	enc := gob.NewEncoder(&buf)
 	for {
 	//go func() {
 		data := handleUDPConnection(ln)
-		/*message := rabbit.Message{
+		message := rabbit.Message{
 			Value: data,
-		}*/
-		//buf.Reset()
-		//enc.Encode(message)
-		rabbit.Publish(data, ch, dataQueue)
+		}
+		buf.Reset()
+		enc.Encode(message)
+		rabbit.Publish(buf, ch, dataQueue)
 	//}()
 	}
 }
@@ -57,7 +59,7 @@ func listenUDP(hostName, portNum string) (*net.UDPConn, error) {
 
 }
 
-func handleUDPConnection(conn *net.UDPConn) string {
+func handleUDPConnection(conn *net.UDPConn) []byte {
 
 	buffer := make([]byte, 1024)
 
@@ -77,6 +79,6 @@ func handleUDPConnection(conn *net.UDPConn) string {
 	if err != nil {
 		log.Println(err)
 	}
-	return string(buffer[:n])
+	return (buffer[:n])
 
 }

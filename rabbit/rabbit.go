@@ -4,20 +4,22 @@ import (
 	"fmt"
 	"log"
 	"github.com/streadway/amqp"
+	"bytes"
+	"encoding/gob"
 )
 
-/*func init() {
+func init() {
 	gob.Register(Message{})
 }
 
 type Message struct {
 	Value     []byte
-}*/
+}
 
-func Publish(message string, ch *amqp.Channel,q *amqp.Queue) {
+func Publish(message bytes.Buffer, ch *amqp.Channel,q *amqp.Queue) {
 	msg := amqp.Publishing{
 		//ContentType: "text/plain",
-		Body:        []byte(message),
+		Body:        message.Bytes(),
 	}
 	ch.Publish("", q.Name, false, false, msg)
 }
@@ -62,12 +64,14 @@ func Subscribe(ch *amqp.Channel, q *amqp.Queue ) {
 		nil)    //args amqp.Table)
 
 	failOnError(err, "Failed to register a consumer")
-
+	var sd Message
 	for msg := range msgs {
-		/*r := bytes.NewReader(msg.Body)
+		r := bytes.NewReader(msg.Body)
 		d := gob.NewDecoder(r)
-		sd := new(Message)
-		d.Decode(sd)*/
-		log.Printf("Received message with message: %s", msg.Body)
+		d.Decode(&sd)
+		/*if err != nil {
+			log.Fatal("can't decode message ", err)
+		}*/
+		log.Printf("Received message with message: %s", sd.Value)
 	}
 }
