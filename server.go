@@ -5,12 +5,10 @@ import (
 	"fmt"
 	"log"
 	"github.com/IrekRomaniuk/go-syslog-rabbit/rabbit"
-	//"bytes"
-	//"encoding/gob"
 )
 
 var (
-	url = "amqp://guest:guest@192.168.3.45:5672"
+	url = "amqp://guest:guest@192.168.3.51:5672"
 )
 
 func main() {

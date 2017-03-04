@@ -7,7 +7,7 @@ import (
 
 func main() {
 
-	conn, ch := rabbit.GetChannel("amqp://guest:guest@192.168.3.45:5672")
+	conn, ch := rabbit.GetChannel("amqp://guest:guest@192.168.3.51:5672")
 	defer conn.Close()
 	defer ch.Close()
 

@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"github.com/streadway/amqp"
-	//"encoding/gob"
-	//"bytes"
 )
 
 /*func init() {
