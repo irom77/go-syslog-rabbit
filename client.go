@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/IrekRomaniuk/go-syslog-rabbit/rabbit"
+	"github.com/irom77/go-syslog-rabbit/rabbit"
 )
 
 

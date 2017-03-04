@@ -4,7 +4,7 @@ import (
 	"net"
 	"fmt"
 	"log"
-	"github.com/IrekRomaniuk/go-syslog-rabbit/rabbit"
+	"github.com/irom77/go-syslog-rabbit/rabbit"
 )
 
 var (
