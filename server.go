@@ -59,8 +59,6 @@ func listenUDP(hostName, portNum string) (*net.UDPConn, error) {
 
 func handleUDPConnection(conn *net.UDPConn) string {
 
-	// here is where you want to do stuff like read or write to client
-
 	buffer := make([]byte, 1024)
 
 	n, _, err := conn.ReadFromUDP(buffer)
