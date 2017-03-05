@@ -1,4 +1,5 @@
 package main
+// Copyright 2017 Irek Romaniuk. All rights reserved.
 
 import (
 	"github.com/irom77/go-syslog-rabbit/rabbit"
