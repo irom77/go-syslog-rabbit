@@ -1,3 +1,7 @@
+// Copyright 2017 Irek Romaniuk. All rights reserved.
+/*
+	Rabbit server
+ */
 package rabbit
 
 import (
