@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	cSERVR = flag.String("s", "guest:guest@192.168.3.51:5672", "Rabbit server")
+	cSERVR = flag.String("r", "guest:guest@192.168.3.51:5672", "Rabbit server")
 	cQUEUE = flag.String("q", "threat", "Name of the queue")
 	Cversion = flag.Bool("v", false, "Prints current version")
 )
