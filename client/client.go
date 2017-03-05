@@ -1,10 +1,10 @@
 /*
 	Syslog to Rabbit client
  */
+// +build
 package main
 
 import (
-	//"github.com/irom77/go-syslog-rabbit/rabbit"
 	"flag"
 	"fmt"
 	"os"
