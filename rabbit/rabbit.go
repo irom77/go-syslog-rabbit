@@ -7,7 +7,7 @@ import (
 	"bytes"
 	"encoding/gob"
 )
-
+//gob registartion
 func init() {
 	gob.Register(Message{})
 }
@@ -15,7 +15,7 @@ func init() {
 type Message struct {
 	Value     []byte
 }
-
+//Publishing message to channel and queue
 func Publish(message bytes.Buffer, ch *amqp.Channel,q *amqp.Queue) {
 	msg := amqp.Publishing{
 		//ContentType: "text/plain",
