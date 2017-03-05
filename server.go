@@ -1,5 +1,8 @@
-package main
 // Copyright 2017 Irek Romaniuk. All rights reserved.
+/*
+	Syslog to Rabbits server
+ */
+package main
 
 import (
 	"github.com/irom77/go-syslog-rabbit/rabbit"
