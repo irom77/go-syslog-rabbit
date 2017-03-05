@@ -1,10 +1,8 @@
 package main
 
 import (
-	"net"
-	"fmt"
-	"log"
 	"github.com/irom77/go-syslog-rabbit/rabbit"
+	"github.com/irom77/go-syslog-rabbit/syslogd"
 	"bytes"
 	"encoding/gob"
 )
@@ -20,65 +18,24 @@ func main() {
 
 	dataQueue := rabbit.GetQueue("threat", ch)
 	
-	ln, _ := listenUDP("localhost", "6000" )
+	ln, _ := syslogd.ListenUDP("localhost", "6000")
+	// 10000 messages with freq 100 -> 10,000 rcvd - syslog on win7, rabbit on Debian
+	// 10000 messages with freq 500 -> max 9,816 rcvd
+	// 10000 messages with freq 1000 -> max 9,377 rcvd
 	defer ln.Close()
 
 	var buf bytes.Buffer
 	enc := gob.NewEncoder(&buf)
 	for {
-	//go func() {
-		data := handleUDPConnection(ln)
+		//go func() {
+		data := syslogd.Start(ln)
 		message := rabbit.Message{
-			Value: data,
+			Value: data, //data["content"],
 		}
 		buf.Reset()
 		enc.Encode(message)
 		rabbit.Publish(buf, ch, dataQueue)
-	//}()
+		//}()
 	}
 }
 
-func listenUDP(hostName, portNum string) (*net.UDPConn, error) {
-	service := hostName + ":" + portNum
-
-	udpAddr, err := net.ResolveUDPAddr("udp4", service)
-
-	if err != nil {
-		return nil, err
-	}
-
-	// setup listener for incoming UDP connection
-	ln, err := net.ListenUDP("udp", udpAddr)
-
-	if err != nil {
-		return nil, err
-	}
-
-	fmt.Println("UDP server up and listening on port " + portNum)
-	return ln, nil
-
-}
-
-func handleUDPConnection(conn *net.UDPConn) []byte {
-
-	buffer := make([]byte, 1024)
-
-	n, _, err := conn.ReadFromUDP(buffer)
-
-	//fmt.Println("UDP client : ", addr)
-	fmt.Println("Received from UDP client :  ", string(buffer[:n]))
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	// write message back to client
-	//message := []byte("Hello UDP client!")
-	//_, err = conn.WriteToUDP(message, addr)
-
-	if err != nil {
-		log.Println(err)
-	}
-	return (buffer[:n])
-
-}

@@ -69,9 +69,9 @@ func Subscribe(ch *amqp.Channel, q *amqp.Queue ) {
 		r := bytes.NewReader(msg.Body)
 		d := gob.NewDecoder(r)
 		d.Decode(&sd)
-		/*if err != nil {
-			log.Fatal("can't decode message ", err)
-		}*/
+		if err != nil {
+			fmt.Println("Error decoding message: ", err)
+		}
 		log.Printf("Received message with message: %s", sd.Value)
 	}
 }
