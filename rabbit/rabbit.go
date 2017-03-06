@@ -57,7 +57,7 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func Subscribe(ch *amqp.Channel, q *amqp.Queue ) {
+func Subscribe(ch *amqp.Channel, q *amqp.Queue, print bool ) {
 	msgs, err := ch.Consume(
 		q.Name, //queue string,
 		"",     //consumer string,
@@ -76,6 +76,9 @@ func Subscribe(ch *amqp.Channel, q *amqp.Queue ) {
 		if err != nil {
 			fmt.Println("Error decoding message: ", err)
 		}
-		log.Printf("Received message with message: %s", sd.Value)
+		if print {
+			log.Printf("Received message with message: %s", sd.Value)
+		}
+
 	}
 }
