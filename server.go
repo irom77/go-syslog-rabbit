@@ -15,7 +15,7 @@ import (
 )
 var (
 	SERVR = flag.String("r", "guest:guest@192.168.3.51:5672", "Rabbit server")
-	SYSPORT = flag.String("s", "6000", "Syslog port")
+	SYSPORT = flag.String("s", "12514", "Syslog port")
 	QUEUE = flag.String("q", "threat", "Name of the queue")
 	version = flag.Bool("v", false, "Prints current version")
 )
