@@ -10,6 +10,8 @@ import (
 	"github.com/streadway/amqp"
 	"bytes"
 	"encoding/gob"
+	"time"
+	"os"
 )
 //gob registartion
 func init() {
@@ -58,6 +60,7 @@ func failOnError(err error, msg string) {
 }
 
 func Subscribe(ch *amqp.Channel, q *amqp.Queue, print bool ) {
+	var sd Message
 	msgs, err := ch.Consume(
 		q.Name, //queue string,
 		"",     //consumer string,
@@ -68,17 +71,25 @@ func Subscribe(ch *amqp.Channel, q *amqp.Queue, print bool ) {
 		nil)    //args amqp.Table)
 
 	failOnError(err, "Failed to register a consumer")
-	var sd Message
-	for msg := range msgs {
-		r := bytes.NewReader(msg.Body)
-		d := gob.NewDecoder(r)
-		d.Decode(&sd)
-		if err != nil {
-			fmt.Println("Error decoding message: ", err)
+	//https://mmcgrana.github.io/2012/09/go-by-example-timers-and-tickers.html
+	const duration = 3 * time.Second
+	timer := time.NewTimer(duration)
+	for  {
+	select {
+		case msg := <-msgs:
+			timer.Reset(duration)
+			r := bytes.NewReader(msg.Body)
+			d := gob.NewDecoder(r)
+			d.Decode(&sd)
+			if err != nil {
+				fmt.Println("Error decoding message: ", err)
+			}
+			if print {
+				log.Printf("Received message with message: %s", sd.Value)
+			}
+		case <-timer.C:
+			fmt.Println("Timeout !")
+			os.Exit(1)
 		}
-		if print {
-			log.Printf("Received message with message: %s", sd.Value)
-		}
-
 	}
 }
