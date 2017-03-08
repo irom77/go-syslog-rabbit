@@ -14,6 +14,7 @@ import (
 var (
 	cSERVR = flag.String("r", "guest:guest@192.168.3.51:5672", "Rabbit server")
 	cQUEUE = flag.String("q", "threat", "Name of the queue")
+	TIMEOUT = flag.Int("t", 3, "Timeout in seconds")
 	PRINT = flag.Bool("p", false, "Print messages")
 	Cversion = flag.Bool("v", false, "Prints current version")
 )
@@ -39,6 +40,6 @@ func main() {
 	defer conn.Close()
 	defer ch.Close()
 
-	dataQueue := rabbit.GetQueue(*cQUEUE, ch)
-	rabbit.Subscribe(ch, dataQueue, *PRINT)
+	dataQueue := rabbit.GetQueue(*cQUEUE, ch, )
+	rabbit.Subscribe(ch, dataQueue, *PRINT, *TIMEOUT)
 }

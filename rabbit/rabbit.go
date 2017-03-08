@@ -59,7 +59,7 @@ func failOnError(err error, msg string) {
 	}
 }
 
-func Subscribe(ch *amqp.Channel, q *amqp.Queue, print bool ) {
+func Subscribe(ch *amqp.Channel, q *amqp.Queue, print bool, timeout int ) {
 	var sd Message
 	msgs, err := ch.Consume(
 		q.Name, //queue string,
@@ -72,7 +72,7 @@ func Subscribe(ch *amqp.Channel, q *amqp.Queue, print bool ) {
 
 	failOnError(err, "Failed to register a consumer")
 	//https://mmcgrana.github.io/2012/09/go-by-example-timers-and-tickers.html
-	const duration = 3 * time.Second
+	var duration = 3 * time.Second
 	timer := time.NewTimer(duration)
 	for  {
 	select {
