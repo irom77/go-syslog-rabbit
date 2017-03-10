@@ -11,13 +11,13 @@ import (
 )
 
 func ListenUDP(syslog string) (*net.UDPConn, error) {
-	udpAddr, err := net.ResolveUDPAddr("udp6", syslog)
+	udpAddr, err := net.ResolveUDPAddr("udp", syslog)
 	if err != nil {
 		return nil, err
 	}
 
 	// setup listener for incoming UDP connection
-	ln, err := net.ListenUDP("udp6", udpAddr)
+	ln, err := net.ListenUDP("udp", udpAddr)
 	if err != nil {
 		return nil, err
 	}
