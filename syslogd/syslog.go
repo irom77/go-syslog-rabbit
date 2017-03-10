@@ -29,12 +29,14 @@ func ListenUDP(hostName, portNum string) (*net.UDPConn, error) {
 
 }
 
-func Start(conn *net.UDPConn) []byte {
+func Start(conn *net.UDPConn, debug bool) []byte {
 
 	buffer := make([]byte, 2048)
 	n, _, err := conn.ReadFromUDP(buffer)
 	//fmt.Println("UDP client : ", addr)
-	//fmt.Println("Received from UDP client :  ", string(buffer[:n]))
+	if debug {
+		fmt.Println("Received from UDP client :  ", string(buffer[:n]))
+	}
 	if err != nil {
 		log.Fatal(err)
 	}

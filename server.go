@@ -16,6 +16,7 @@ import (
 var (
 	SERVR = flag.String("r", "guest:guest@192.168.3.51:5672", "Rabbit server")
 	SYSPORT = flag.String("s", "12514", "Syslog port")
+	DEBUG = flag.Bool("p", false, "Print debug")
 	QUEUE = flag.String("q", "threat", "Name of the queue")
 	version = flag.Bool("v", false, "Prints current version")
 )
@@ -54,12 +55,12 @@ func main() {
 	// 10000 messages with freq 500 -> max 9,816 rcvd
 	// 10000 messages with freq 1000 -> max 9,377 rcvd
 	defer ln.Close()
-
+	fmt.Printf("0.0.0.0:%s -> %s ", *SYSPORT, url)
 	var buf bytes.Buffer
 	enc := gob.NewEncoder(&buf)
 	for {
 		//go func() {
-		data := syslogd.Start(ln)
+		data := syslogd.Start(ln, *DEBUG)
 		message := rabbit.Message{
 			Value: data,
 		}
