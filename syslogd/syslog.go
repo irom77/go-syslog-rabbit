@@ -17,7 +17,7 @@ func ListenUDP(syslog string) (*net.UDPConn, error) {
 	}
 
 	// setup listener for incoming UDP connection
-	ln, err := net.ListenUDP("udp", udpAddr)
+	ln, err := net.ListenUDP("udp4", udpAddr)
 	if err != nil {
 		return nil, err
 	}
