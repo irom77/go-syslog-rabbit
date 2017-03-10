@@ -10,10 +10,8 @@ import (
 	"fmt"
 )
 
-func ListenUDP(hostName, portNum string) (*net.UDPConn, error) {
-	service := hostName + ":" + portNum
-
-	udpAddr, err := net.ResolveUDPAddr("udp4", service)
+func ListenUDP(syslog string) (*net.UDPConn, error) {
+	udpAddr, err := net.ResolveUDPAddr("udp4", syslog)
 	if err != nil {
 		return nil, err
 	}
@@ -24,7 +22,7 @@ func ListenUDP(hostName, portNum string) (*net.UDPConn, error) {
 		return nil, err
 	}
 
-	fmt.Println("UDP server " + hostName + " up and listening on port " + portNum)
+	fmt.Println("UDP server " + syslog + " is up")
 	return ln, nil
 
 }
