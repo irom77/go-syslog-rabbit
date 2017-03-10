@@ -8,3 +8,6 @@ UDP server up and listening on port 12514
 
 
 $GOPATH/bin/go-syslog-rabbit -s="127.0.0.1:12514" -r="guest:guest@localhost:5672" -p=true
+
+
+syslog-generator -ip="127.0.0.1" -protocol="udp" -port="12514"
