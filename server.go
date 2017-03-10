@@ -55,7 +55,7 @@ func main() {
 	// 10000 messages with freq 500 -> max 9,816 rcvd
 	// 10000 messages with freq 1000 -> max 9,377 rcvd
 	defer ln.Close()
-	fmt.Printf("0.0.0.0:%s -> %s ", *SYSPORT, url)
+	fmt.Printf("DEBUG %v\n0.0.0.0:%s -> %s\n", *DEBUG,*SYSPORT, url)
 	var buf bytes.Buffer
 	enc := gob.NewEncoder(&buf)
 	for {
