@@ -24,7 +24,7 @@ func ListenUDP(hostName, portNum string) (*net.UDPConn, error) {
 		return nil, err
 	}
 
-	fmt.Println("UDP server up and listening on port " + portNum)
+	fmt.Println("UDP server " + hostName + " up and listening on port " + portNum)
 	return ln, nil
 
 }
