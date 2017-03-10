@@ -49,7 +49,7 @@ func main() {
 
 	dataQueue := rabbit.GetQueue(*QUEUE, ch)
 	
-	ln, _ := syslogd.ListenUDP("localhost", *SYSPORT)
+	ln, _ := syslogd.ListenUDP("0.0.0.0", *SYSPORT)
 	// 10000 messages with freq 100 -> 10,000 rcvd - syslog on win7, rabbit on Debian
 	// 10000 messages with freq 500 -> max 9,816 rcvd
 	// 10000 messages with freq 1000 -> max 9,377 rcvd
