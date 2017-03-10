@@ -37,10 +37,12 @@ func init() {
 }
 
 var (
-	url = "amqp://" + *SERVR
+	url = "amqp://"
 )
 
 func main() {
+	url += *SERVR
+	fmt.Println("Connecting to " + url)
 	conn, ch := rabbit.GetChannel(url)
 	defer conn.Close()
 	defer ch.Close()
