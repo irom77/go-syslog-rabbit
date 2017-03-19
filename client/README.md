@@ -1,7 +1,7 @@
 ### Syslog to Raabbit client
 
 irek@ubuntu-server:~$ cd $GOPATH
-irek@ubuntu-server:~/go$ go install ./src/github.com/irom77/go-syslog-rabbit/
+irek@ubuntu-server:~/go$ go install ./src/github.com/irom77/go-syslog-rabbit/client
 irek@ubuntu-server:~/go$ ls -l $GOPATH/bin
 total 13300
 -rwxrwxr-x 1 irek irek 6809680 Mar  5 17:19 client

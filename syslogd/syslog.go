@@ -5,7 +5,6 @@
 package syslogd
 
 import (
-	"log"
 	"net"
 	"fmt"
 )
@@ -27,7 +26,7 @@ func ListenUDP(syslog string) (*net.UDPConn, error) {
 
 }
 
-func Start(conn *net.UDPConn, debug bool) []byte {
+func Start(conn *net.UDPConn, debug bool) ([]byte, error) {
 
 	buffer := make([]byte, 2048)
 	n, _, err := conn.ReadFromUDP(buffer)
@@ -36,7 +35,7 @@ func Start(conn *net.UDPConn, debug bool) []byte {
 		fmt.Println("Received from UDP client :  ", string(buffer[:n]))
 	}
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
-	return (buffer[:n])
+	return buffer[:n], nil
 }

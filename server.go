@@ -12,6 +12,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"log"
 )
 var (
 	RABVR = flag.String("r", "guest:guest@192.168.3.51:5672", "Rabbit server")
@@ -50,17 +51,23 @@ func main() {
 
 	dataQueue := rabbit.GetQueue(*QUEUE, ch)
 	
-	ln, _ := syslogd.ListenUDP(*SYSVR)
+	ln, err := syslogd.ListenUDP(*SYSVR)
 	// 10000 messages with freq 100 -> 10,000 rcvd - syslog on win7, rabbit on Debian
 	// 10000 messages with freq 500 -> max 9,816 rcvd
 	// 10000 messages with freq 1000 -> max 9,377 rcvd
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer ln.Close()
-	fmt.Printf("DEBUG %v\n%s -> %s\n", *DEBUG,*SYSVR, url)
+	fmt.Printf("DEBUG %v\n%s -> %s\n", *DEBUG, *SYSVR, url)
 	var buf bytes.Buffer
 	enc := gob.NewEncoder(&buf)
 	for {
 		//go func() {
-		data := syslogd.Start(ln, *DEBUG)
+		data, err := syslogd.Start(ln, *DEBUG)
+		if err != nil {
+			log.Fatal(err)
+		}
 		message := rabbit.Message{
 			Value: data,
 		}
